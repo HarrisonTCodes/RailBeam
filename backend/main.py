@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from datetime import datetime
 from dotenv import load_dotenv
 import requests
 import os
@@ -21,11 +22,15 @@ app.add_middleware(
 )
 
 load_dotenv()
-token = os.getenv("TOKEN")
+token = os.getenv("TOKEN") #store OpenLDBWS API token here
 
 #load station names/crs
 with open("stations.json", "r") as file:
     stations = json.load(file)
+
+#calculate duration between 2 string times
+def duration(t1, t2):
+    return (datetime.strptime(t2, "%H:%M") - datetime.strptime(t1, "%H:%M")) / 60
 
 #GET service IDs from one station to another
 @app.get("/service-id/{from_crs}/{to_crs}")
@@ -63,7 +68,8 @@ def service(service_id: str, to_crs: str):
             "estimatedDepartTime": service_data["etd"],
             "toCrs": to_crs,
             "arriveTime": arrival_data["st"],
-            "estimatedArriveTime": arrival_data["et"]
+            "estimatedArriveTime": arrival_data["et"],
+            "duration": duration(service_data["std"], arrival_data["st"])
         }
     else:
         raise HTTPException(status_code=400, detail="Bad request")

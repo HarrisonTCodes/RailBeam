@@ -41,15 +41,17 @@ export default function Home() {
         })
     }
 
-    function timeStringToValue(time: string) {
-        let numeric = time.replace(":","")
-        return Number(numeric)
-    }
-
+    //all services, sorted by departure time
     const sortedData = useMemo(() => {
         let copy = [...data]
-        copy.sort((a,b) => (timeStringToValue(a.departTime)>timeStringToValue(b.departTime)) ? 1 : -1)
+        copy.sort((a,b) => (a.departTime>b.departTime) ? 1 : -1)
         return copy
+    }, [data])
+
+    //average duration
+    const averageDuration = useMemo(() => {
+        let sum = data.reduce((accumulator: number, service: TrainInfo) => accumulator + service.duration, 0)
+        return sum / data.length
     }, [data])
 
     return (
@@ -65,7 +67,7 @@ export default function Home() {
 
             <div className="flex flex-col items-center gap-4 mb-16">
                 {sortedData.map((train, index) => {
-                    return <TrainWidget {...train} key={index} />
+                    return <TrainWidget {...train} key={index} averageDuration={averageDuration} />
                 })}
                 {err ? <p className="text-3xl text-gray-400 pt-40 text-center">No journeys found.</p> : <></>}
             </div>
