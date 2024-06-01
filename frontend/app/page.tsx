@@ -41,14 +41,10 @@ export default function Home() {
         })
     }
 
-    function timeStringToValue(time: string) {
-        let numeric = time.replace(":","")
-        return Number(numeric)
-    }
-
+    //all services, sorted by departure time
     const sortedData = useMemo(() => {
         let copy = [...data]
-        copy.sort((a,b) => (timeStringToValue(a.departTime)>timeStringToValue(b.departTime)) ? 1 : -1)
+        copy.sort((a,b) => (a.departTime>b.departTime) ? 1 : -1)
         return copy
     }, [data])
 
