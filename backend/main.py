@@ -65,34 +65,28 @@ def service(service_id: str, to_name: str):
         service_data = service_response.json()
         subsequent_calling_points = service_data["subsequentCallingPoints"][0]["callingPoint"]
 
+        #get data about arrival calling point
         try:
             arrival_data = next(filter(lambda point: point["crs"] == to_crs, subsequent_calling_points))
         except Exception as error:
             print(error)
             raise HTTPException(status_code=400, detail="Bad request")
         
-        try:
-            return {
-                "platform": service_data["platform"],
-                "fromCrs": service_data["crs"],
-                "departTime": service_data["std"],
-                "estimatedDepartTime": service_data["etd"],
-                "toCrs": to_crs,
-                "arriveTime": arrival_data["st"],
-                "estimatedArriveTime": arrival_data["et"],
-                "duration": duration(service_data["std"], arrival_data["st"])
-            }
-        except: #the above block only fails when the service is cancelled
-            return {
-                "platform": service_data["platform"],
-                "fromCrs": service_data["crs"],
-                "departTime": service_data["sta"], #when service is cancelled, replace departure time with placeholder arrival time
-                "estimatedDepartTime": "Cancelled",
-                "toCrs": to_crs,
-                "arriveTime": arrival_data["st"],
-                "estimatedArriveTime": arrival_data["et"],
-                "duration": duration(service_data["sta"], arrival_data["st"]) #use former placeholder in duration calculation too
-            }
+        cancelled =  "Cancelled" in (arrival_data["et"], service_data["etd"])
+        print(service_data["sta"], cancelled)
+        serviceDuration = duration(service_data["sta" if cancelled else "std"], arrival_data["st"])
+        
+        return {
+            "platform": service_data["platform"],
+            "fromCrs": service_data["crs"],
+            "departTime": service_data["std"] if not cancelled else service_data["sta"],
+            "estimatedDepartTime": service_data["etd"] if not cancelled else "Cancelled",
+            "toCrs": to_crs,
+            "arriveTime": arrival_data["st"],
+            "estimatedArriveTime": arrival_data["et"] if not cancelled else "Cancelled",
+            "duration": serviceDuration
+        }
+    
     else:
         raise HTTPException(status_code=400, detail="Bad request")
 

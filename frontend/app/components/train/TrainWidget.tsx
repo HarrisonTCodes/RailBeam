@@ -6,17 +6,23 @@ export default function TrainWidget({ platform, fromCrs, departTime, estimatedDe
             <section className="flex-1 flex-grow flex flex-col items-center gap-1">
                 <p>{fromCrs} {platform ? `P${platform}` : ""}</p>
                 <p className="text-3xl">{departTime}</p>
-                <p className="text-gray-400">{estimatedDepartTime ? `${estimatedDepartTime}` : "Imminent"}</p>
+                <p className={`${estimatedDepartTime == "Cancelled" ? "text-[#de0404]" : "text-gray-400"}`}>
+                    {estimatedDepartTime ? `${estimatedDepartTime}` : "Imminent"}
+                </p>
             </section>
             <section className="flex-1 flex-grow flex flex-col items-center gap-1">
                 <p>{toCrs}</p>
                 <p className="text-3xl">{arriveTime}</p>
-                <p className="text-gray-400">{estimatedArriveTime}</p>
+                <p className={`${estimatedArriveTime == "Cancelled" ? "text-[#de0404]" : "text-gray-400"}`}>
+                    {estimatedArriveTime}
+                </p>
             </section>
             <section className="flex-1 flex-grow flex flex-col items-center gap-1">
                 <p>DURATION</p>
                 <p className="text-3xl">{duration.toString()}m</p>
-                <p className={`${duration > averageDuration ? "text-[#de0404]" : "text-[#27ad1d]"} font-medium`}>{duration > averageDuration ? "Slow" : "Fast"}</p>
+                <p className={`${duration > averageDuration ? "text-[#de0404]" : "text-[#27ad1d]"} font-medium`}>
+                    {duration > averageDuration ? "Slow" : "Fast"}
+                </p>
             </section>
         </div>
     )
