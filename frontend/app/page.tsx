@@ -23,6 +23,10 @@ export default function Home() {
         .then(response => response.json())
         .then(serviceIds => {
 
+            if (serviceIds.length == 0) {
+                setErr(true)
+            }
+
             serviceIds.map((id: string) => {
                 fetch(`http://localhost:8000/service/${id}/${toCrs}`) //pull service data from id
                 .then(response => response.json())
@@ -41,10 +45,21 @@ export default function Home() {
         })
     }
 
+    function compareTimes(a: string, b: string) { //handle sorting trains that go beyond midnight, as 00 < 23
+        let ah = Number(a[0]+a[1])
+        let bh = Number (b[1]+b[1])
+        if (ah < 3) { //assume trains before midnight will only ever be in the same journey group as trains before 3am
+            a = `${ah+24}${a.slice(2)}`
+        } if (bh < 3) {
+            b = `${bh+24}${b.slice(2)}`
+        }
+        return a > b ? 1 : -1
+    }
+
     //all services, sorted by departure time
     const sortedData = useMemo(() => {
         let copy = [...data]
-        copy.sort((a,b) => (a.departTime > b.departTime) ? 1 : -1)
+        copy.sort((a,b) => compareTimes(a.departTime, b.departTime))
         return copy
     }, [data])
 
