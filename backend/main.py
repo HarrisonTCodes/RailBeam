@@ -30,7 +30,9 @@ with open("stations.json", "r") as file:
 
 #calculate duration between 2 string times
 def duration(t1, t2):
-    return (datetime.strptime(t2, "%H:%M") - datetime.strptime(t1, "%H:%M")) / 60
+    dur = (datetime.strptime(t2, "%H:%M") - datetime.strptime(t1, "%H:%M")).total_seconds() / 60
+    if dur < 0: dur = 1440 + dur #account for trains that depart and arrive on different days (late trains)
+    return dur
 
 #GET service IDs from one station to another
 @app.get("/service-id/{from_name}/{to_name}")
@@ -62,21 +64,35 @@ def service(service_id: str, to_name: str):
     if service_response.status_code == 200:
         service_data = service_response.json()
         subsequent_calling_points = service_data["subsequentCallingPoints"][0]["callingPoint"]
+
         try:
             arrival_data = next(filter(lambda point: point["crs"] == to_crs, subsequent_calling_points))
         except Exception as error:
             print(error)
             raise HTTPException(status_code=400, detail="Bad request")
-        return {
-            "platform": service_data["platform"],
-            "fromCrs": service_data["crs"],
-            "departTime": service_data["std"],
-            "estimatedDepartTime": service_data["etd"],
-            "toCrs": to_crs,
-            "arriveTime": arrival_data["st"],
-            "estimatedArriveTime": arrival_data["et"],
-            "duration": duration(service_data["std"], arrival_data["st"])
-        }
+        
+        try:
+            return {
+                "platform": service_data["platform"],
+                "fromCrs": service_data["crs"],
+                "departTime": service_data["std"],
+                "estimatedDepartTime": service_data["etd"],
+                "toCrs": to_crs,
+                "arriveTime": arrival_data["st"],
+                "estimatedArriveTime": arrival_data["et"],
+                "duration": duration(service_data["std"], arrival_data["st"])
+            }
+        except: #the above block only fails when the service is cancelled
+            return {
+                "platform": service_data["platform"],
+                "fromCrs": service_data["crs"],
+                "departTime": service_data["sta"], #when service is cancelled, replace departure time with placeholder arrival time
+                "estimatedDepartTime": "Cancelled",
+                "toCrs": to_crs,
+                "arriveTime": arrival_data["st"],
+                "estimatedArriveTime": arrival_data["et"],
+                "duration": duration(service_data["sta"], arrival_data["st"]) #use former placeholder in duration calculation too
+            }
     else:
         raise HTTPException(status_code=400, detail="Bad request")
 
