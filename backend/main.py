@@ -36,7 +36,7 @@ def duration(t1, t2):
 @app.get("/service-id/{from_name}/{to_name}")
 def service_id(from_name: str, to_name: str):
     #convert station names to crs
-    (from_crs, to_crs) = (stations.get(from_name), stations.get(to_name))
+    (from_crs, to_crs) = (stations.get(from_name.lower()), stations.get(to_name.lower()))
     if not all((from_crs, to_crs)): raise HTTPException(status_code=400, detail="Bad request")
     
     #get IDs
@@ -53,7 +53,7 @@ def service_id(from_name: str, to_name: str):
 @app.get("/service/{service_id}/{to_name}")
 def service(service_id: str, to_name: str):
     #convert station name to crs
-    to_crs = stations.get(to_name)
+    to_crs = stations.get(to_name.lower())
     if not to_crs: raise HTTPException(status_code=400, detail="Bad request")
 
     #get service info
