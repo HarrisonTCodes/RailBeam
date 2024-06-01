@@ -73,7 +73,6 @@ def service(service_id: str, to_name: str):
             raise HTTPException(status_code=400, detail="Bad request")
         
         cancelled =  "Cancelled" in (arrival_data["et"], service_data["etd"])
-        print(service_data["sta"], cancelled)
         serviceDuration = duration(service_data["sta" if cancelled else "std"], arrival_data["st"])
         
         return {
