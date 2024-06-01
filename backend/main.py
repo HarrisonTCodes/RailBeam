@@ -46,7 +46,11 @@ def service_id(from_name: str, to_name: str):
 
     if huxley_response.status_code == 200:
         train_services = huxley_response.json()["trainServices"]
-        service_ids = [train_service["serviceIdPercentEncoded"] for train_service in train_services]
+        try:
+            service_ids = [train_service["serviceIdPercentEncoded"] for train_service in train_services]
+        except TypeError as type_error: #if no service ids returned (valid stations, but no live journeys)
+            print(type_error)
+            service_ids = []
         return service_ids
     else:
         raise HTTPException(status_code=400, detail="Bad request")
