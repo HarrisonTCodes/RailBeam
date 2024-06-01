@@ -69,7 +69,7 @@ export default function Home() {
                 {sortedData.map((train, index) => {
                     return <TrainWidget {...train} key={index} averageDuration={averageDuration} />
                 })}
-                {err ? <p className="text-3xl text-gray-400 pt-40 text-center">No journeys found.</p> : <></>}
+                {err ? <p className="text-3xl text-gray-400 pt-20 text-center">No journeys found.</p> : <></>}
             </div>
         </>
     )
