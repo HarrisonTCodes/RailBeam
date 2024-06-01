@@ -48,6 +48,12 @@ export default function Home() {
         return copy
     }, [data])
 
+    //average duration
+    const averageDuration = useMemo(() => {
+        let sum = data.reduce((accumulator: number, service: TrainInfo) => accumulator + service.duration, 0)
+        return sum / data.length
+    }, [data])
+
     return (
         <>
             <div className="pt-32 pb-8 px-2 flex flex-col md:flex-row justify-center items-center gap-8">
@@ -61,7 +67,7 @@ export default function Home() {
 
             <div className="flex flex-col items-center gap-4 mb-16">
                 {sortedData.map((train, index) => {
-                    return <TrainWidget {...train} key={index} />
+                    return <TrainWidget {...train} key={index} averageDuration={averageDuration} />
                 })}
                 {err ? <p className="text-3xl text-gray-400 pt-40 text-center">No journeys found.</p> : <></>}
             </div>
