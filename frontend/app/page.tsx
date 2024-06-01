@@ -23,7 +23,7 @@ export default function Home() {
         .then(response => response.json())
         .then(serviceIds => {
 
-            if (serviceIds.length == 0) {
+            if (serviceIds.length == 0) { //if there are no services
                 setErr(true)
             }
 
@@ -46,12 +46,12 @@ export default function Home() {
     }
 
     function compareTimes(a: string, b: string) { //handle sorting trains that go beyond midnight, as 00 < 23
-        let ah = Number(a[0]+a[1])
-        let bh = Number (b[1]+b[1])
-        if (ah < 3) { //assume trains before midnight will only ever be in the same journey group as trains before 3am
-            a = `${ah+24}${a.slice(2)}`
-        } if (bh < 3) {
-            b = `${bh+24}${b.slice(2)}`
+        let aHours = Number(a[0] + a[1])
+        let bHours = Number (b[1] + b[1])
+        if (aHours < 3) { //assume trains before midnight will only ever be in the same journey group as trains before 3am
+            a = `${aHours + 24}${a.slice(2)}`
+        } if (bHours < 3) {
+            b = `${bHours + 24}${b.slice(2)}`
         }
         return a > b ? 1 : -1
     }
@@ -65,9 +65,8 @@ export default function Home() {
 
     //average duration
     const averageDuration = useMemo(() => {
-        let filteredData = [...data].filter((service: TrainInfo) => service.duration != 0) //remove cancelled trains (where duration is 0)
-        let sum = filteredData.reduce((accumulator: number, service: TrainInfo) => accumulator + service.duration, 0)
-        return sum / filteredData.length
+        let sum = data.reduce((accumulator: number, service: TrainInfo) => accumulator + service.duration, 0)
+        return sum / data.length
     }, [data])
 
     return (

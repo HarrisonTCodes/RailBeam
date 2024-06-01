@@ -74,17 +74,19 @@ def service(service_id: str, to_name: str):
         
         #calculate cancellation and duration
         cancelled =  "Cancelled" in (arrival_data["et"], service_data["etd"])
-        serviceDuration = 0 if cancelled else duration(service_data["std"], arrival_data["st"]) #set duration to 0 for cancelled services
+        departTime = service_data["std"] if service_data["std"] else service_data["sta"] #when services are cancelled, std is sometimes null
+        serviceDuration = duration(departTime, arrival_data["st"])
         
         return {
             "platform": service_data["platform"],
             "fromCrs": service_data["crs"],
-            "departTime": service_data["std"] if service_data["std"] else service_data["sta"], #when services are cancelled, std is sometimes null
+            "departTime": departTime,
             "estimatedDepartTime": service_data["etd"] if not cancelled else "Cancelled",
             "toCrs": to_crs,
             "arriveTime": arrival_data["st"],
             "estimatedArriveTime": arrival_data["et"] if not cancelled else "Cancelled",
-            "duration": serviceDuration
+            "duration": serviceDuration,
+            "cancelled": cancelled
         }
     
     else:
