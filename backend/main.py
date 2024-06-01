@@ -72,13 +72,14 @@ def service(service_id: str, to_name: str):
             print(error)
             raise HTTPException(status_code=400, detail="Bad request")
         
+        #calculate cancellation and duration
         cancelled =  "Cancelled" in (arrival_data["et"], service_data["etd"])
-        serviceDuration = duration(service_data["sta" if cancelled else "std"], arrival_data["st"])
+        serviceDuration = 0 if cancelled else duration(service_data["std"], arrival_data["st"]) #set duration to 0 for cancelled services
         
         return {
             "platform": service_data["platform"],
             "fromCrs": service_data["crs"],
-            "departTime": service_data["std"] if not cancelled else service_data["sta"],
+            "departTime": service_data["std"] if service_data["std"] else service_data["sta"], #when services are cancelled, std is sometimes null
             "estimatedDepartTime": service_data["etd"] if not cancelled else "Cancelled",
             "toCrs": to_crs,
             "arriveTime": arrival_data["st"],
@@ -92,4 +93,4 @@ def service(service_id: str, to_name: str):
 #get station names that begin with a given prompt
 @app.get("/station/{prompt}")
 def station(prompt: str):
-    return [station_name for station_name in stations.keys() if station_name[0:len(prompt)] == prompt]
+    return [station_name.title() for station_name in stations.keys() if station_name[0:len(prompt)] == prompt]

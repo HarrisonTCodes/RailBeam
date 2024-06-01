@@ -44,14 +44,15 @@ export default function Home() {
     //all services, sorted by departure time
     const sortedData = useMemo(() => {
         let copy = [...data]
-        copy.sort((a,b) => (a.departTime>b.departTime) ? 1 : -1)
+        copy.sort((a,b) => (a.departTime > b.departTime) ? 1 : -1)
         return copy
     }, [data])
 
     //average duration
     const averageDuration = useMemo(() => {
-        let sum = data.reduce((accumulator: number, service: TrainInfo) => accumulator + service.duration, 0)
-        return sum / data.length
+        let filteredData = [...data].filter((service: TrainInfo) => service.duration != 0) //remove cancelled trains (where duration is 0)
+        let sum = filteredData.reduce((accumulator: number, service: TrainInfo) => accumulator + service.duration, 0)
+        return sum / filteredData.length
     }, [data])
 
     return (

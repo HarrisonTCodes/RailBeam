@@ -19,9 +19,9 @@ export default function TrainWidget({ platform, fromCrs, departTime, estimatedDe
             </section>
             <section className="flex-1 flex-grow flex flex-col items-center gap-1">
                 <p>DURATION</p>
-                <p className="text-3xl">{duration.toString()}m</p>
-                <p className={`${duration > averageDuration ? "text-[#de0404]" : "text-[#27ad1d]"} font-medium`}>
-                    {duration > averageDuration ? "Slow" : "Fast"}
+                <p className="text-3xl">{duration == 0 ? "-" : `${duration.toString()}m`}</p>
+                <p className={`${duration > averageDuration || duration == 0 ? "text-[#de0404]" : "text-[#27ad1d]"} font-medium`}>
+                    {duration == 0 ? "Cancelled" : (duration > averageDuration ? "Slow" : "Fast")}
                 </p>
             </section>
         </div>
