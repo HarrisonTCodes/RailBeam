@@ -6,14 +6,14 @@ export default function TrainWidget({ platform, fromCrs, departTime, estimatedDe
             <section className="flex-1 flex-grow flex flex-col items-center gap-1">
                 <p>{fromCrs} {platform ? `P${platform}` : ""}</p>
                 <p className="text-3xl">{departTime}</p>
-                <p className={`${estimatedDepartTime == "Cancelled" ? "text-[#de0404]" : "text-gray-400"}`}>
+                <p className={`${estimatedDepartTime == "Cancelled" ? "text-[#de0404] font-medium" : "text-gray-400"}`}>
                     {estimatedDepartTime ? `${estimatedDepartTime}` : "Imminent"}
                 </p>
             </section>
             <section className="flex-1 flex-grow flex flex-col items-center gap-1">
                 <p>{toCrs}</p>
                 <p className="text-3xl">{arriveTime}</p>
-                <p className={`${estimatedArriveTime == "Cancelled" ? "text-[#de0404]" : "text-gray-400"}`}>
+                <p className={`${estimatedArriveTime == "Cancelled" ? "text-[#de0404] font-medium" : "text-gray-400"}`}>
                     {estimatedArriveTime}
                 </p>
             </section>
