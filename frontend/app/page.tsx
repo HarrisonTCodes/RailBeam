@@ -64,8 +64,8 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col items-center gap-4 mb-16">
-                {sortedData.map((train) => {
-                    return <TrainWidget {...train} key={train.departTime} />
+                {sortedData.map((train, index) => {
+                    return <TrainWidget {...train} key={index} />
                 })}
                 {err ? <p className="text-3xl text-gray-400 pt-40 text-center">No journeys found.</p> : <></>}
             </div>
