@@ -6,4 +6,5 @@ export default interface TrainInfo {
     toCrs: string;
     arriveTime: string;
     estimatedArriveTime: string;
+    duration: Number;
 }
