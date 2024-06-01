@@ -22,7 +22,7 @@ app.add_middleware(
 )
 
 load_dotenv()
-token = os.getenv("TOKEN")
+token = os.getenv("TOKEN") #store OpenLDBWS API token here
 
 #load station names/crs
 with open("stations.json", "r") as file:
