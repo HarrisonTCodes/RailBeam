@@ -3,10 +3,9 @@
 import { Search, Bookmark, BookmarkBorder } from "@mui/icons-material"
 import SearchBar from "./components/search/SearchBar"
 import SmallButton from "./components/search/SmallButton"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import TrainInfo from "./interfaces/TrainInfo";
 import TrainWidget from "./components/train/TrainWidget";
-import { BhuTuka_Expanded_One } from "next/font/google";
 
 export default function Home() {
     const [saved, setSaved] = useState<boolean>(false)

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Person, Train, Bookmarks, Menu, Settings, Search } from '@mui/icons-material';
+import { Person, Train, Bookmarks, Menu, Search } from '@mui/icons-material';
 import NavButton from "./NavButton";
 import MenuPanelButton from "./MenuPanelButton";
 import { useState } from "react";
