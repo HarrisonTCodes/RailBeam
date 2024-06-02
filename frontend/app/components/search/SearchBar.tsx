@@ -21,10 +21,11 @@ export default function SearchBar({ label, setState, state } : { label?: string,
     }
 
     function onChange(ev: ChangeEvent<HTMLInputElement>) {
-        setState(ev.target.value)
-        if ([3, 9].includes(ev.target.value.length)) { //when input is either 3 or 9 characters long
+        let backspace = (ev.target.value.length - state.length) == -1 //get whether backspace was pressed by comparing old and new values
+        setState(ev.target.value) //set value to changed input
+        if ([3, 9].includes(ev.target.value.length) && !backspace) { //when input is either 3 or 9 characters long, and backspace wasn't pressed
             setData([])
-            getData(ev.target.value)
+            getData(ev.target.value) //call API
         }
     }
 
