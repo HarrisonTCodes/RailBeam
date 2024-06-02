@@ -31,10 +31,12 @@ export default function Home() {
                 fetch(`http://localhost:8000/service/${id}/${toCrs}`) //pull service data from id
                 .then(response => response.json())
                 .then(service => {
-                    setData(data => [
-                        ...data,
-                        service
-                    ])
+                    if (service) {
+                        setData(data => [
+                            ...data,
+                            service
+                        ])
+                    }
                 })
             })
 

@@ -39,7 +39,7 @@ def duration(t1, t2):
 def service_id(from_name: str, to_name: str):
     #convert station names to crs
     (from_crs, to_crs) = (stations.get(from_name.lower()), stations.get(to_name.lower()))
-    if not all((from_crs, to_crs)): raise HTTPException(status_code=400, detail="Bad request")
+    if not all((from_crs, to_crs)): raise HTTPException(status_code=400, detail="Bad request - station names not recognised")
     
     #get IDs
     huxley_response = requests.get(f"https://huxley2.azurewebsites.net/departures/{from_crs}/to/{to_crs}/?accessToken={token}")
@@ -53,14 +53,14 @@ def service_id(from_name: str, to_name: str):
             service_ids = []
         return service_ids
     else:
-        raise HTTPException(status_code=400, detail="Bad request")
+        raise HTTPException(status_code=400, detail="Bad request - huxley failed")
 
 #GET service info from ID, plus info about given calling point from station name
 @app.get("/service/{service_id}/{to_name}")
 def service(service_id: str, to_name: str):
     #convert station name to crs
     to_crs = stations.get(to_name.lower())
-    if not to_crs: raise HTTPException(status_code=400, detail="Bad request")
+    if not to_crs: raise HTTPException(status_code=400, detail="Bad request - station name not recognised")
 
     #get service info
     service_response = requests.get(f"https://huxley2.azurewebsites.net/service/{service_id}/?accessToken={token}")
@@ -72,9 +72,9 @@ def service(service_id: str, to_name: str):
         #get data about arrival calling point
         try:
             arrival_data = next(filter(lambda point: point["crs"] == to_crs, subsequent_calling_points))
-        except Exception as error:
+        except Exception as error: #if indirect route with a change
             print(error)
-            raise HTTPException(status_code=400, detail="Bad request")
+            return #ignore indirect routes
         
         #calculate cancellation and duration
         cancelled =  "Cancelled" in (arrival_data["et"], service_data["etd"])
@@ -94,7 +94,7 @@ def service(service_id: str, to_name: str):
         }
     
     else:
-        raise HTTPException(status_code=400, detail="Bad request")
+        raise HTTPException(status_code=400, detail="Bad request - huxley failed")
 
 #get station names that begin with a given prompt
 @app.get("/station/{prompt}")
