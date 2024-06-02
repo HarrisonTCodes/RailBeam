@@ -99,4 +99,4 @@ def service(service_id: str, to_name: str):
 #get station names that begin with a given prompt
 @app.get("/station/{prompt}")
 def station(prompt: str):
-    return [station_name.title() for station_name in stations.keys() if station_name[0:len(prompt)] == prompt]
+    return [station_name.title() for station_name in stations.keys() if station_name[0:len(prompt)] == prompt.lower()]
