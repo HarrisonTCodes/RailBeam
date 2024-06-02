@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Bookmark, BookmarkBorder } from "@mui/icons-material"
+import { Search, Bookmark, BookmarkBorder, SwapHoriz } from "@mui/icons-material"
 import SearchBar from "./components/search/SearchBar"
 import SmallButton from "./components/search/SmallButton"
 import { useMemo, useState } from "react"
@@ -78,6 +78,7 @@ export default function Home() {
                 <SearchBar label="Arrive at"  setState={setArriveAt} state={arriveAt} />
                 <div className="flex gap-4">
                     <SmallButton icon={<Search fontSize="large" />} onClick={() => getData(departFrom, arriveAt)} />
+                    <SmallButton icon={<SwapHoriz fontSize="large"/>} />
                     <SmallButton icon={saved ? <Bookmark fontSize="large" /> : <BookmarkBorder fontSize="large" />} onClick={() => setSaved(!saved)}/>
                 </div>
             </div>

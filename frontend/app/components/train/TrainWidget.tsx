@@ -2,7 +2,7 @@ import TrainInfo from "@/app/interfaces/TrainInfo";
 
 export default function TrainWidget({ platform, fromCrs, departTime, estimatedDepartTime, toCrs, arriveTime, estimatedArriveTime, duration, averageDuration, cancelled } : TrainInfo) {
     return (
-        <div className="flex border-2 border-gray-300 rounded-xl max-w-[820px] w-[85%] divide-x-2 divide-inherit">
+        <div className="flex border-2 border-gray-300 rounded-xl max-w-[820px] w-[90%] divide-x-2 divide-inherit">
             {/* departure station */}
             <section className="flex-1 flex-grow flex flex-col items-center gap-1">
                 <p>{fromCrs} {platform ? `P${platform}` : ""}</p>
