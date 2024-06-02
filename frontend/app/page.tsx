@@ -45,6 +45,13 @@ export default function Home() {
         })
     }
 
+    function switchStations () {
+        let departTemp = departFrom
+        let arriveTemp = arriveAt
+        setDepartFrom(arriveTemp)
+        setArriveAt(departTemp)
+    }
+
     function compareTimes(a: string, b: string) { //handle sorting trains that go beyond midnight, as 00 < 23
         let aHours = Number(a[0] + a[1])
         let bHours = Number(b[0] + b[1])
@@ -78,7 +85,7 @@ export default function Home() {
                 <SearchBar label="Arrive at"  setState={setArriveAt} state={arriveAt} />
                 <div className="flex gap-4">
                     <SmallButton icon={<Search fontSize="large" />} onClick={() => getData(departFrom, arriveAt)} />
-                    <SmallButton icon={<SwapHoriz fontSize="large"/>} />
+                    <SmallButton icon={<SwapHoriz fontSize="large"/>} onClick={switchStations} />
                     <SmallButton icon={saved ? <Bookmark fontSize="large" /> : <BookmarkBorder fontSize="large" />} onClick={() => setSaved(!saved)}/>
                 </div>
             </div>
