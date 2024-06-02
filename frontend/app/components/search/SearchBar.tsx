@@ -22,7 +22,7 @@ export default function SearchBar({ label, setState, state } : { label?: string,
 
     function onChange(ev: ChangeEvent<HTMLInputElement>) {
         setState(ev.target.value)
-        if ([3, 9].includes(ev.target.value.length)) {
+        if ([3, 9].includes(ev.target.value.length)) { //when input is either 3 or 9 characters long
             setData([])
             getData(ev.target.value)
         }
@@ -39,7 +39,7 @@ export default function SearchBar({ label, setState, state } : { label?: string,
                 onFocus={() => setFocused(true)}
                 onBlur={() => setFocused(false)}
             />
-            {state.length >= 3 && (focused || hovered) &&
+            {state.length >= 3 && data.length > 0 && (focused || hovered) &&
             <div 
                 className="flex cursor-pointer w-80 bg-white border rounded-xl shadow-lg flex-col z-1 absolute top-44 max-h-60 overflow-y-scroll"
                 onMouseEnter={() => setHovered(true)}
