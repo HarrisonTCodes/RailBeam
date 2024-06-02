@@ -6,6 +6,7 @@ import SmallButton from "./components/search/SmallButton"
 import { useEffect, useMemo, useState } from "react"
 import TrainInfo from "./interfaces/TrainInfo";
 import TrainWidget from "./components/train/TrainWidget";
+import { BhuTuka_Expanded_One } from "next/font/google";
 
 export default function Home() {
     const [saved, setSaved] = useState<boolean>(false)
@@ -22,6 +23,10 @@ export default function Home() {
         fetch(`http://localhost:8000/service-id/${fromCrs}/${toCrs}`) //pull service ids
         .then(response => response.json())
         .then(serviceIds => {
+
+            if (serviceIds.length == 0) { //if there are no services
+                setErr(true)
+            }
 
             serviceIds.map((id: string) => {
                 fetch(`http://localhost:8000/service/${id}/${toCrs}`) //pull service data from id
@@ -41,10 +46,23 @@ export default function Home() {
         })
     }
 
+    function compareTimes(a: string, b: string) { //handle sorting trains that go beyond midnight, as 00 < 23
+        let aHours = Number(a[0] + a[1])
+        let bHours = Number(b[0] + b[1])
+        if (aHours < 3) { //assume trains before midnight will only ever be in the same journey group as trains before 3am
+            a = `${aHours + 24}${a.slice(2)}`
+            console.log("YES")
+        } if (bHours < 3) {
+            b = `${bHours + 24}${b.slice(2)}`
+            console.log("YES")
+        }
+        return a > b ? 1 : -1
+    }
+
     //all services, sorted by departure time
     const sortedData = useMemo(() => {
         let copy = [...data]
-        copy.sort((a,b) => (a.departTime>b.departTime) ? 1 : -1)
+        copy.sort((a,b) => compareTimes(a.departTime, b.departTime))
         return copy
     }, [data])
 

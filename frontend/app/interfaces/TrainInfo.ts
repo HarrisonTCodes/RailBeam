@@ -8,4 +8,5 @@ export default interface TrainInfo {
     estimatedArriveTime: string;
     duration: number;
     averageDuration: number;
+    cancelled: boolean;
 }
