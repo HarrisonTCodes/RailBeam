@@ -42,7 +42,7 @@ export default function SearchBar({ label, setState, state } : { label?: string,
             />
             {state.length >= 3 && data.length > 0 && (focused || hovered) &&
             <div 
-                className="flex cursor-pointer w-72 bg-white border rounded-xl shadow-lg flex-col z-1 absolute top-44 max-h-60 overflow-y-scroll"
+                className={`flex cursor-pointer w-72 bg-white border rounded-xl shadow-lg flex-col z-1 absolute max-h-60 overflow-y-scroll mt-12`}
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
             >
