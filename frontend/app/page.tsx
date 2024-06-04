@@ -19,9 +19,11 @@ export default function Home() {
     const [loading, setLoading] = useState<boolean>(false)
 
     function getData(fromCrs: string, toCrs: string) {
+        //initialise states
         setData([])
         setLoading(true)
         setErr(false)
+        
         fetch(`http://localhost:8000/service-id/${fromCrs}/${toCrs}`) //pull service ids
         .then(response => response.json())
         .then(serviceIds => {
