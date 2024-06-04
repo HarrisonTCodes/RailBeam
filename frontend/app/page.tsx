@@ -6,6 +6,7 @@ import SmallButton from "./components/search/SmallButton"
 import { useMemo, useState } from "react"
 import TrainInfo from "./interfaces/TrainInfo";
 import TrainWidget from "./components/train/TrainWidget";
+import TrainWidgetSkeleton from "./components/train/TrainWidgetSkeleton";
 
 export default function Home() {
     const [saved, setSaved] = useState<boolean>(false)
@@ -14,10 +15,12 @@ export default function Home() {
     const [arriveAt, setArriveAt] = useState<string>("")
 
     const [data, setData] = useState<TrainInfo[]>([])
-    const [err, setErr] = useState<boolean>()
+    const [err, setErr] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(false)
 
     function getData(fromCrs: string, toCrs: string) {
         setData([])
+        setLoading(true)
         setErr(false)
         fetch(`http://localhost:8000/service-id/${fromCrs}/${toCrs}`) //pull service ids
         .then(response => response.json())
@@ -29,7 +32,10 @@ export default function Home() {
 
             serviceIds.map((id: string) => {
                 fetch(`http://localhost:8000/service/${id}/${toCrs}`) //pull service data from id
-                .then(response => response.json())
+                .then(response => {
+                    setLoading(false)
+                    return response.json()
+                })
                 .then(service => {
                     if (service) {
                         setData(data => [
@@ -93,10 +99,20 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col items-center gap-4 mb-16">
+                {/* services */}
                 {sortedData.map((train, index) => {
                     return <TrainWidget {...train} key={index} averageDuration={averageDuration} />
                 })}
+
+                {/* error message */}
                 {err ? <p className="text-3xl text-gray-400 pt-20 text-center">No services found.</p> : <></>}
+
+                {/* loading skeletons */}
+                {loading && !err ?
+                    [...Array(6)].map((_, index) => <TrainWidgetSkeleton key={`skeleton${index}`} />)
+                :
+                    <></>
+                }
             </div>
         </>
     )
