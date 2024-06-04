@@ -6,6 +6,7 @@ import SmallButton from "./components/search/SmallButton"
 import { useMemo, useState } from "react"
 import TrainInfo from "./interfaces/TrainInfo";
 import TrainWidget from "./components/train/TrainWidget";
+import TrainWidgetSkeleton from "./components/train/TrainWidgetSkeleton";
 
 export default function Home() {
     const [saved, setSaved] = useState<boolean>(false)
@@ -98,11 +99,20 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col items-center gap-4 mb-16">
+                {/* services */}
                 {sortedData.map((train, index) => {
                     return <TrainWidget {...train} key={index} averageDuration={averageDuration} />
                 })}
+
+                {/* error message */}
                 {err ? <p className="text-3xl text-gray-400 pt-20 text-center">No services found.</p> : <></>}
-                {loading && !err ? <p className="text-3xl text-gray-400 pt-20 text-center">Loading...</p> : <></>}
+
+                {/* loading skeletons */}
+                {loading && !err ?
+                    [...Array(6)].map((_, index) => <TrainWidgetSkeleton key={`skeleton${index}`} />)
+                :
+                    <></>
+                }
             </div>
         </>
     )
