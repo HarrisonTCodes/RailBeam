@@ -14,10 +14,12 @@ export default function Home() {
     const [arriveAt, setArriveAt] = useState<string>("")
 
     const [data, setData] = useState<TrainInfo[]>([])
-    const [err, setErr] = useState<boolean>()
+    const [err, setErr] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(false)
 
     function getData(fromCrs: string, toCrs: string) {
         setData([])
+        setLoading(true)
         setErr(false)
         fetch(`http://localhost:8000/service-id/${fromCrs}/${toCrs}`) //pull service ids
         .then(response => response.json())
@@ -29,7 +31,10 @@ export default function Home() {
 
             serviceIds.map((id: string) => {
                 fetch(`http://localhost:8000/service/${id}/${toCrs}`) //pull service data from id
-                .then(response => response.json())
+                .then(response => {
+                    setLoading(false)
+                    return response.json()
+                })
                 .then(service => {
                     if (service) {
                         setData(data => [
@@ -97,6 +102,7 @@ export default function Home() {
                     return <TrainWidget {...train} key={index} averageDuration={averageDuration} />
                 })}
                 {err ? <p className="text-3xl text-gray-400 pt-20 text-center">No services found.</p> : <></>}
+                {loading ? <p className="text-3xl text-gray-400 pt-20 text-center">Loading...</p> : <></>}
             </div>
         </>
     )
