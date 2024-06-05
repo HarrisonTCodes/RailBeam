@@ -107,7 +107,7 @@ export default function Home() {
                 })}
 
                 {/* error message */}
-                {err ? <p className="text-3xl text-failure pt-20 text-center">{<Warning fontSize="large"/>} No services found</p> : <></>}
+                {err ? <p className="text-3xl text-failure pt-20 text-center"><Warning fontSize="large"/> No services found</p> : <></>}
 
                 {/* loading skeletons */}
                 {loading && !err ?
