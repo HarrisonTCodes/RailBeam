@@ -11,7 +11,6 @@ export default function Navbar() {
     const buttonData = [
         {link:"/", label:"Search", icon:<Search fontSize="large" />},
         {link:"/journeys", label:"Journeys", icon:<Bookmarks fontSize="large" />},
-        {link:"/account", label:"Account", icon:<Person fontSize="large" />}
     ]
 
     return (
