@@ -16,7 +16,7 @@ export default function Navbar() {
     return (
         <nav className="w-full fixed border-b-2 border-gray-300 py-6 flex justify-between px-2 items-center bg-white z-10">
             <Link href={"/"} className="text-3xl">
-                <p className="flex flex-row"><Train fontSize="large"/>RailBeam</p>
+                <p className="flex flex-row"><Train fontSize="large" />RailBeam</p>
             </Link>
 
             <div className="flex gap-4">
