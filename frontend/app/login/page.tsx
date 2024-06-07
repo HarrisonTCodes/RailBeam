@@ -1,6 +1,6 @@
 import { Login, Person } from "@mui/icons-material"
 import InputField from "../components/form/InputField"
-import SubmitButton from "../components/form/SubmitButton"
+import FormButton from "../components/form/FormButton"
 
 export default function LoginPage() {
     return (
@@ -10,7 +10,7 @@ export default function LoginPage() {
                 <form action="" className="flex flex-col items-center gap-4 pt-4">
                     <InputField name="username" placeholder="Username" />
                     <InputField name="password" placeholder="Password" type="password" />
-                    <SubmitButton label="Login" icon={<Login fontSize="large" />} />
+                    <FormButton label="Login" icon={<Login fontSize="large" />} type="submit" />
                 </form>
             </div>
         </div>
