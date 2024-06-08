@@ -17,6 +17,9 @@ const config: Config = {
         "primary": "#142c8e",
         "secondary": "#003087",
         "highlight": "#0070e0"
+      },
+      screens: {
+        "md": "905px"
       }
     },
   },
