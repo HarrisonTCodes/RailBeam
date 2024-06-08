@@ -11,7 +11,7 @@ export default function NewJourney() {
 
     return (
         <div className="flex items-center justify-center h-[100vh]">
-            <div className="flex flex-col items-center rounded-xl border-gray-300 border w-[60%] min-w-[350px] max-w-[500px]  shadow-lg py-2 gap-4">
+            <div className="flex flex-col items-center rounded-xl border-gray-300 border w-[80%] min-w-[350px] max-w-[500px]  shadow-lg py-2 gap-4">
                 <p className="text-3xl flex items-center gap-2 text-primary font-semibold pt-2 pb-8">Create New Journey</p>
                 <input 
                     placeholder="Journey name"
