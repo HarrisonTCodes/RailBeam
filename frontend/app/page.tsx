@@ -1,57 +1,16 @@
 "use client";
 
-import { Search, SwapHoriz, Warning } from "@mui/icons-material"
+import { Search, SwapHoriz } from "@mui/icons-material"
 import SearchBar from "./components/search/SearchBar"
 import SmallButton from "./components/search/SmallButton"
-import { useMemo, useState } from "react"
-import TrainInfo from "./interfaces/TrainInfo";
-import TrainWidget from "./components/train/TrainWidget";
-import TrainWidgetSkeleton from "./components/train/TrainWidgetSkeleton";
+import { useRef, useState } from "react"
+import Trains, { TrainsRef } from "./components/train/Trains";
 
 export default function Home() {
     const [departFrom, setDepartFrom] = useState<string>("")
     const [arriveAt, setArriveAt] = useState<string>("")
 
-    const [data, setData] = useState<TrainInfo[]>([])
-    const [err, setErr] = useState<boolean>(false)
-    const [loading, setLoading] = useState<boolean>(false)
-
-    function getData(fromCrs: string, toCrs: string) {
-        //initialise states
-        setData([])
-        setLoading(true)
-        setErr(false)
-        
-        fetch(`${process.env.apiBase}/service-id/${fromCrs}/${toCrs}`) //pull service ids
-        .then(response => response.json())
-        .then(serviceIds => {
-
-            if (serviceIds.length == 0) { //if there are no services
-                setErr(true)
-            }
-
-            serviceIds.map((id: string) => {
-                fetch(`${process.env.apiBase}/service/${id}/${toCrs}`) //pull service data from id
-                .then(response => {
-                    setLoading(false)
-                    return response.json()
-                })
-                .then(service => {
-                    if (service) {
-                        setData(data => [
-                            ...data,
-                            service
-                        ])
-                    }
-                })
-            })
-
-        })
-        .catch(err => {
-            console.error(err)
-            setErr(true)
-        })
-    }
+    const trainsRef = useRef<TrainsRef>(null)
 
     function switchStations () {
         let departTemp = departFrom
@@ -60,59 +19,17 @@ export default function Home() {
         setArriveAt(departTemp)
     }
 
-    function compareTimes(a: string, b: string) { //handle sorting trains that go beyond midnight, as 00 < 23
-        let aHours = Number(a[0] + a[1])
-        let bHours = Number(b[0] + b[1])
-        if (aHours < 3) { //assume trains before midnight will only ever be in the same journey group as trains before 3am
-            a = `${aHours + 24}${a.slice(2)}`
-            console.log("YES")
-        } if (bHours < 3) {
-            b = `${bHours + 24}${b.slice(2)}`
-            console.log("YES")
-        }
-        return a > b ? 1 : -1
-    }
-
-    //all services, sorted by departure time
-    const sortedData = useMemo(() => {
-        let copy = [...data]
-        copy.sort((a,b) => compareTimes(a.departTime, b.departTime))
-        return copy
-    }, [data])
-
-    //average duration
-    const averageDuration = useMemo(() => {
-        let sum = data.reduce((accumulator: number, service: TrainInfo) => accumulator + service.duration, 0)
-        return sum / data.length
-    }, [data])
-
     return (
         <>
             <div className="pt-32 pb-8 px-2 flex flex-col md:flex-row justify-center items-center gap-8">
                 <SearchBar label="Depart from" setState={setDepartFrom} state={departFrom} />
                 <SearchBar label="Arrive at"  setState={setArriveAt} state={arriveAt} />
                 <div className="flex gap-4">
-                    <SmallButton icon={<Search fontSize="large" htmlColor="#ffffff" />} onClick={() => getData(departFrom, arriveAt)} />
+                    <SmallButton icon={<Search fontSize="large" htmlColor="#ffffff" />} onClick={() => trainsRef.current?.getData(departFrom, arriveAt)} />
                     <SmallButton icon={<SwapHoriz fontSize="large" htmlColor="#ffffff" />} onClick={switchStations} />
                 </div>
             </div>
-
-            <div className="flex flex-col items-center gap-4 mb-16">
-                {/* services */}
-                {sortedData.map((train, index) => {
-                    return <TrainWidget {...train} key={index} averageDuration={averageDuration} />
-                })}
-
-                {/* error message */}
-                {err ? <p className="flex gap-2 text-3xl text-failure pt-4 font-semibold"><Warning fontSize="large"/> No services found</p> : <></>}
-
-                {/* loading skeletons */}
-                {loading && !err ?
-                    [...Array(6)].map((_, index) => <TrainWidgetSkeleton key={`skeleton${index}`} />)
-                :
-                    <></>
-                }
-            </div>
+            <Trains ref={trainsRef} />
         </>
     )
 }
