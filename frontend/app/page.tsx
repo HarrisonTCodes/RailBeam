@@ -21,7 +21,8 @@ export default function Home() {
 
     return (
         <>
-            <div className="pt-32 pb-8 px-2 flex flex-col md:flex-row justify-center items-center gap-8">
+            <p className="pt-32 pb-8 text-center text-3xl font-semibold text-primary">Search Live Trains</p>
+            <div className="pb-8 px-2 flex flex-col md:flex-row justify-center items-center gap-8">
                 <SearchBar label="Depart from" setState={setDepartFrom} state={departFrom} />
                 <SearchBar label="Arrive at"  setState={setArriveAt} state={arriveAt} />
                 <div className="flex gap-4">
