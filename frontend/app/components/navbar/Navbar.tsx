@@ -14,7 +14,7 @@ export default function Navbar() {
     ]
 
     return (
-        <nav className="w-full fixed border-b-2 border-gray-300 py-6 flex justify-between px-2 items-center bg-primary z-10">
+        <nav className="w-full fixed border-b-2 border-gray-300 py-6 flex justify-between px-4 items-center bg-primary z-10">
             <Link href={"/"} className="text-3xl">
                 <p className="flex flex-row text-white"><Train fontSize="large" htmlColor="#ffffff" />RailBeam</p>
             </Link>
