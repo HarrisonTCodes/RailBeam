@@ -24,7 +24,7 @@ export default function Home() {
         setLoading(true)
         setErr(false)
         
-        fetch(`http://localhost:8000/service-id/${fromCrs}/${toCrs}`) //pull service ids
+        fetch(`${process.env.apiBase}/service-id/${fromCrs}/${toCrs}`) //pull service ids
         .then(response => response.json())
         .then(serviceIds => {
 
@@ -33,7 +33,7 @@ export default function Home() {
             }
 
             serviceIds.map((id: string) => {
-                fetch(`http://localhost:8000/service/${id}/${toCrs}`) //pull service data from id
+                fetch(`${process.env.apiBase}/service/${id}/${toCrs}`) //pull service data from id
                 .then(response => {
                     setLoading(false)
                     return response.json()

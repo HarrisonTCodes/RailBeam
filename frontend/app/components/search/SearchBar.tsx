@@ -8,7 +8,7 @@ export default function SearchBar({ label, setState, state } : { label?: string,
     let [data, setData] = useState<string[]>([])
 
     function getData(prompt: string) {
-        fetch(`http://localhost:8000/station/${prompt}`)
+        fetch(`${process.env.apiBase}/station/${prompt}`)
         .then(response => response.json())
         .then(stations => {
             stations.map((station: string) => {
