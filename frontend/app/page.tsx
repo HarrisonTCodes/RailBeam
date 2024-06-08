@@ -106,7 +106,7 @@ export default function Home() {
                 })}
 
                 {/* error message */}
-                {err ? <p className="flex gap-2 text-3xl text-failure pt-20 font-semibold"><Warning fontSize="large"/> No services found</p> : <></>}
+                {err ? <p className="flex gap-2 text-3xl text-failure pt-4 font-semibold"><Warning fontSize="large"/> No services found</p> : <></>}
 
                 {/* loading skeletons */}
                 {loading && !err ?
