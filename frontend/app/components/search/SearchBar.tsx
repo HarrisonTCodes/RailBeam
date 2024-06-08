@@ -18,6 +18,9 @@ export default function SearchBar({ label, setState, state } : { label?: string,
                 ])
             })
         })
+        .catch(err => {
+            console.error(err)
+        })
     }
 
     function onChange(ev: ChangeEvent<HTMLInputElement>) {
