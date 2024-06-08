@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Person, Train, Bookmarks, Menu, Search } from '@mui/icons-material';
+import { Train, Bookmarks, Menu, Search } from '@mui/icons-material';
 import NavButton from "./NavButton";
 import MenuPanelButton from "./MenuPanelButton";
 import { useState } from "react";
@@ -9,14 +9,14 @@ import { useState } from "react";
 export default function Navbar() {
     const [menuPanelOpen, setMenuPanelOpen] = useState<boolean>(false)
     const buttonData = [
-        {link:"/", label:"Search", icon:<Search fontSize="large" />},
-        {link:"/journeys", label:"Journeys", icon:<Bookmarks fontSize="large" />},
+        {link:"/", label:"Search", icon:<Search fontSize="large" htmlColor="#142c8e" />},
+        {link:"/journeys", label:"Journeys", icon:<Bookmarks fontSize="large" htmlColor="#142c8e" />},
     ]
 
     return (
-        <nav className="w-full fixed border-b-2 border-gray-300 py-6 flex justify-between px-2 items-center bg-white z-10">
+        <nav className="w-full fixed border-b-2 border-gray-300 py-6 flex justify-between px-2 items-center bg-primary z-10">
             <Link href={"/"} className="text-3xl">
-                <p className="flex flex-row"><Train fontSize="large" />RailBeam</p>
+                <p className="flex flex-row text-white"><Train fontSize="large" htmlColor="#ffffff" />RailBeam</p>
             </Link>
 
             <div className="flex gap-4">
@@ -24,10 +24,10 @@ export default function Navbar() {
                     return <NavButton {...data} key={data.label} />
                 })}
 
-                <div className="cursor-pointer flex sm:hidden flex-row items-center rounded-xl py-1 px-1 border-2 hover:bg-gray-100 transition"
+                <div className="cursor-pointer flex sm:hidden flex-row items-center rounded-xl p-1 bg-cream transition"
                      onClick={() => setMenuPanelOpen(!menuPanelOpen)}
                 >
-                    <Menu fontSize="large" />
+                    <Menu fontSize="large" htmlColor="#142c8e" />
                 </div>
             </div>
             {menuPanelOpen && 

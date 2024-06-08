@@ -94,9 +94,9 @@ export default function Home() {
                 <SearchBar label="Depart from" setState={setDepartFrom} state={departFrom} />
                 <SearchBar label="Arrive at"  setState={setArriveAt} state={arriveAt} />
                 <div className="flex gap-4">
-                    <SmallButton icon={<Search fontSize="large" />} onClick={() => getData(departFrom, arriveAt)} />
-                    <SmallButton icon={<SwapHoriz fontSize="large"/>} onClick={switchStations} />
-                    <SmallButton icon={saved ? <Bookmark fontSize="large" /> : <BookmarkBorder fontSize="large" />} onClick={() => setSaved(!saved)}/>
+                    <SmallButton icon={<Search fontSize="large" htmlColor="#ffffff" />} onClick={() => getData(departFrom, arriveAt)} />
+                    <SmallButton icon={<SwapHoriz fontSize="large" htmlColor="#ffffff" />} onClick={switchStations} />
+                    <SmallButton icon={saved ? <Bookmark fontSize="large" htmlColor="#ffffff" /> : <BookmarkBorder fontSize="large" htmlColor="#ffffff" />} onClick={() => setSaved(!saved)}/>
                 </div>
             </div>
 
