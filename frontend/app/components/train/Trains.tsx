@@ -59,10 +59,8 @@ function Trains({}, ref: Ref<TrainsRef>) {
         let bHours = Number(b[0] + b[1])
         if (aHours < 3) { //assume trains before midnight will only ever be in the same journey group as trains before 3am
             a = `${aHours + 24}${a.slice(2)}`
-            console.log("YES")
         } if (bHours < 3) {
             b = `${bHours + 24}${b.slice(2)}`
-            console.log("YES")
         }
         return a > b ? 1 : -1
     }
