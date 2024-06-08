@@ -24,7 +24,7 @@ export default function Navbar() {
                     return <NavButton {...data} key={data.label} />
                 })}
 
-                <div className="cursor-pointer flex sm:hidden flex-row items-center rounded-xl p-1 bg-cream transition"
+                <div className="cursor-pointer flex sm:hidden flex-row items-center rounded-xl p-1 bg-cream-100 transition"
                      onClick={() => setMenuPanelOpen(!menuPanelOpen)}
                 >
                     <Menu fontSize="large" htmlColor="#142c8e" />
