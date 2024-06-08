@@ -9,8 +9,6 @@ import TrainWidget from "./components/train/TrainWidget";
 import TrainWidgetSkeleton from "./components/train/TrainWidgetSkeleton";
 
 export default function Home() {
-    const [saved, setSaved] = useState<boolean>(false)
-
     const [departFrom, setDepartFrom] = useState<string>("")
     const [arriveAt, setArriveAt] = useState<string>("")
 
