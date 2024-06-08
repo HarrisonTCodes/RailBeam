@@ -37,7 +37,7 @@ export default function SearchBar({ label, setState, state } : { label?: string,
             <input 
                 type="text"
                 placeholder={label}
-                className="border-2 border-gray-300 focus:border-secondary focus:outline-none rounded-xl focus:ring-0 py-2 px-2 text-xl w-72 transition"
+                className="border-2 border-gray-300 focus:border-secondary focus:outline-none rounded-xl focus:ring-0 py-2 px-2 text-xl w-80 transition"
                 onChange={onChange}
                 value={state}
                 onFocus={() => setFocused(true)}
@@ -45,7 +45,7 @@ export default function SearchBar({ label, setState, state } : { label?: string,
             />
             {state.length >= 3 && data.length > 0 && (focused || hovered) &&
             <div 
-                className={`flex cursor-pointer w-72 bg-white border rounded-xl shadow-lg flex-col z-1 absolute max-h-60 overflow-y-scroll mt-12`}
+                className={`flex cursor-pointer w-80 bg-white border rounded-xl shadow-lg flex-col z-1 absolute max-h-60 overflow-y-scroll mt-12`}
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
             >
