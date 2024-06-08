@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react"
+import SmallButton from "../components/search/SmallButton";
+import { Add } from "@mui/icons-material"
+import Link from "next/link";
 
 export default function JourneysPage() {
     const [journeySearch, setJourneySearch] = useState("")
@@ -8,7 +11,7 @@ export default function JourneysPage() {
     return (
         <>
             <p className="pt-32 pb-8 text-center text-3xl font-semibold text-primary">Train Journeys</p>
-            <div className="pb-8 px-2 flex flex-col md:flex-row justify-center items-center gap-8">
+            <div className="pb-8 px-2 flex flex-col sm:flex-row justify-center items-center gap-8">
                 <input 
                     type="text"
                     placeholder="Search journeys"
@@ -16,6 +19,9 @@ export default function JourneysPage() {
                     onChange={(ev) => setJourneySearch(ev.target.value)}
                     value={journeySearch}
                 />
+                <Link href={"/new-journey"}>
+                    <SmallButton icon={<Add fontSize="large" htmlColor="#ffffff" />} />
+                </Link>
             </div>
         </>
     )
