@@ -7,6 +7,7 @@ import Link from "next/link";
 
 export default function JourneysPage() {
     const [journeySearch, setJourneySearch] = useState("")
+    const journeys = JSON.parse(localStorage.getItem("journeys")!)
 
     return (
         <>
