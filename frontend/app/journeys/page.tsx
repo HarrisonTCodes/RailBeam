@@ -1,13 +1,26 @@
 "use client";
 
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import SmallButton from "../components/search/SmallButton";
 import { Add } from "@mui/icons-material"
 import Link from "next/link";
+import JourneyInfo from "../interfaces/JourneyInfo";
+import Journey from "../components/journey/Journey";
 
 export default function JourneysPage() {
     const [journeySearch, setJourneySearch] = useState("")
-    const journeys = JSON.parse(localStorage.getItem("journeys")!)
+    const [journeys, setJourneys] = useState([])
+
+    useEffect(() => {
+        setJourneys(JSON.parse(localStorage.getItem("journeys")!))
+    }, [])
+
+    const filteredJourneys = useMemo(() => {
+        if (journeys === null) {
+            return []
+        }
+        return journeys.filter((journey: JourneyInfo) => journey.name.toLowerCase().includes(journeySearch.toLowerCase()))
+    }, [journeys, journeySearch])
 
     return (
         <>
@@ -23,6 +36,11 @@ export default function JourneysPage() {
                 <Link href={"/new-journey"}>
                     <SmallButton icon={<Add fontSize="large" htmlColor="#ffffff" />} />
                 </Link>
+            </div>
+            <div className="flex flex-col items-center gap-4 mb-16">
+                {filteredJourneys.map((journey: JourneyInfo, index) => {
+                    return <Journey {...journey} key={`journey${index}`} />
+                })}
             </div>
         </>
     )

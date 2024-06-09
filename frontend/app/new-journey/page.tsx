@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 
 export default function NewJourney() {
     const [journeyName, setJourneyName] = useState("")
-    const [departFrom, setDepartFrom] = useState("")
-    const [arriveAt, setArriveAt] = useState("")
+    const [firstStation, setFirstStation] = useState("")
+    const [secondStation, setSecondStation] = useState("")
 
     const router = useRouter()
 
@@ -23,8 +23,8 @@ export default function NewJourney() {
         
         journeys.push({
             name: journeyName,
-            departFrom: departFrom,
-            arriveAt: arriveAt
+            firstStaion: firstStation,
+            secondStation: secondStation
         })
 
         localStorage.setItem("journeys", JSON.stringify(journeys))
@@ -42,8 +42,8 @@ export default function NewJourney() {
                     onChange={(ev) => setJourneyName(ev.target.value)}
                     value={journeyName}
                 />
-                <SearchBar label="Depart from" state={departFrom} setState={setDepartFrom} />
-                <SearchBar label="Arrive at" state={arriveAt} setState={setArriveAt} />
+                <SearchBar label="First station" state={firstStation} setState={setFirstStation} />
+                <SearchBar label="Second station" state={secondStation} setState={setSecondStation} />
                 <button
                     className="w-80 flex rounded-xl bg-primary items-center justify-center mt-8 py-1 gap-2 hover:bg-highlight transition mb-8"
                     onClick={addJourney}
