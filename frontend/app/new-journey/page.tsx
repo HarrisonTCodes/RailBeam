@@ -23,7 +23,7 @@ export default function NewJourney() {
         
         journeys.push({
             name: journeyName,
-            firstStaion: firstStation,
+            firstStation: firstStation,
             secondStation: secondStation
         })
 
