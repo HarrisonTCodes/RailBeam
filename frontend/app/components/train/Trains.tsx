@@ -82,7 +82,7 @@ function Trains({}, ref: Ref<TrainsRef>) {
         <div className="flex flex-col items-center gap-4 mb-16">
                 {/* services */}
                 {sortedData.map((train, index) => {
-                    return <TrainWidget {...train} key={index} averageDuration={averageDuration} />
+                    return <TrainWidget {...train} key={`train${index}`} averageDuration={averageDuration} />
                 })}
 
                 {/* error message */}
