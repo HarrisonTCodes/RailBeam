@@ -1,4 +1,3 @@
-import JourneyInfo from "@/app/interfaces/JourneyInfo";
 import SmallButton from "../search/SmallButton";
 import { Delete, OpenInNew } from "@mui/icons-material";
 
