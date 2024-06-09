@@ -74,7 +74,7 @@ export default function JourneysPage() {
             </div>
             <div className="flex flex-col items-center gap-4 mb-16">
                 {filteredJourneys.map((journey: JourneyInfo, index) => {
-                    return <JourneyWidget {...journey} deleteFunction={() => deleteJourney(journey.name)} openFunction={() => setSelectedJourney(journey)} key={`journey${index}`} />
+                    return <JourneyWidget {...journey} deleteFunction={() => deleteJourney(journey.name)} openFunction={() => openJourney(journey)} key={`journey${index}`} />
                 })}
             </div>
             </>
