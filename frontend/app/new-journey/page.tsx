@@ -3,11 +3,34 @@
 import { useState } from "react"
 import SearchBar from "../components/search/SearchBar"
 import { Add } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
 
 export default function NewJourney() {
     const [journeyName, setJourneyName] = useState("")
     const [departFrom, setDepartFrom] = useState("")
     const [arriveAt, setArriveAt] = useState("")
+
+    const router = useRouter()
+
+    function addJourney() {
+        var journeys;
+
+        if (localStorage.getItem("journeys") === null) {
+            journeys = [];
+        } else {
+            journeys = JSON.parse(localStorage.getItem("journeys")!)
+        }
+        
+        journeys.push({
+            name: journeyName,
+            departFrom: departFrom,
+            arriveAt: arriveAt
+        })
+
+        localStorage.setItem("journeys", JSON.stringify(journeys))
+
+        router.push("/journeys")
+    }
 
     return (
         <div className="flex items-center justify-center h-[100vh]">
@@ -23,6 +46,7 @@ export default function NewJourney() {
                 <SearchBar label="Arrive at" state={arriveAt} setState={setArriveAt} />
                 <button
                     className="w-80 flex rounded-xl bg-primary items-center justify-center mt-8 py-1 gap-2 hover:bg-highlight transition mb-8"
+                    onClick={addJourney}
                 >
                     <Add fontSize="large" htmlColor="#ffffff" />
                     <p className="font-bold text-white">Add Journey</p>
