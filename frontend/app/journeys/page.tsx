@@ -16,16 +16,19 @@ export default function JourneysPage() {
 
     const trainsRef = useRef<TrainsRef>(null)
 
+    //get journeys from localStorage when window loads
     useEffect(() => {
         setJourneys(JSON.parse(localStorage.getItem("journeys")!))
     }, [])
 
+    //get trains data when journey is selected
     useEffect(() => {
         if (selectedJourney !== null) {
             trainsRef.current?.getData(selectedJourney.firstStation, selectedJourney.secondStation)
         }
     }, [selectedJourney])
 
+    //get journeys that match user search
     const filteredJourneys = useMemo(() => {
         if (journeys === null) {
             return []
@@ -33,17 +36,20 @@ export default function JourneysPage() {
         return journeys.filter((journey: JourneyInfo) => journey.name.toLowerCase().includes(journeySearch.toLowerCase()))
     }, [journeys, journeySearch])
 
+    //delete journey from memory and localStorage
     function deleteJourney(name: string) {
         let newJourneys = journeys.filter((journey: JourneyInfo) => journey.name != name)
         setJourneys(newJourneys)
         localStorage.setItem("journeys", JSON.stringify(newJourneys))
     }
 
+    //load journey and trains
     function openJourney(journey: JourneyInfo) {
         setSelectedJourney(journey)
         setSwitched(false)
     }
 
+    //switch station order for loaded journey
     function switchStations() {
         if (switched) {
             trainsRef.current?.getData(selectedJourney!.firstStation, selectedJourney!.secondStation)
@@ -51,6 +57,15 @@ export default function JourneysPage() {
             trainsRef.current?.getData(selectedJourney!.secondStation, selectedJourney!.firstStation)
         }
         setSwitched(!switched)
+    }
+
+    //refresh trains
+    function refresh() {
+        if (switched) {
+            trainsRef.current?.getData(selectedJourney!.secondStation, selectedJourney!.firstStation)
+        } else {
+            trainsRef.current?.getData(selectedJourney!.firstStation, selectedJourney!.secondStation)
+        }
     }
 
     return (
@@ -97,6 +112,7 @@ export default function JourneysPage() {
                 }
                 </p>
             <div className="flex justify-center py-4 gap-4">
+                <SmallButton icon={<Refresh fontSize="large" htmlColor="#ffffff" />} onClick={refresh} />
                 <SmallButton icon={<SwapHoriz fontSize="large" htmlColor="#ffffff" />} onClick={switchStations} />
             </div>
             <Trains ref={trainsRef} />
