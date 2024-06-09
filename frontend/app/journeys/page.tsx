@@ -5,7 +5,7 @@ import SmallButton from "../components/search/SmallButton";
 import { Add } from "@mui/icons-material"
 import Link from "next/link";
 import JourneyInfo from "../interfaces/JourneyInfo";
-import Journey from "../components/journey/Journey";
+import JourneyWidget from "../components/journey/JourneyWidget";
 
 export default function JourneysPage() {
     const [journeySearch, setJourneySearch] = useState("")
@@ -39,7 +39,7 @@ export default function JourneysPage() {
             </div>
             <div className="flex flex-col items-center gap-4 mb-16">
                 {filteredJourneys.map((journey: JourneyInfo, index) => {
-                    return <Journey {...journey} key={`journey${index}`} />
+                    return <JourneyWidget {...journey} key={`journey${index}`} />
                 })}
             </div>
         </>
