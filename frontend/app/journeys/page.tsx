@@ -1,19 +1,29 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import SmallButton from "../components/search/SmallButton";
-import { Add } from "@mui/icons-material"
+import { Add, ArrowBack, Refresh, SwapHoriz } from "@mui/icons-material"
 import Link from "next/link";
 import JourneyInfo from "../interfaces/JourneyInfo";
 import JourneyWidget from "../components/journey/JourneyWidget";
+import Trains, { TrainsRef } from "../components/train/Trains";
 
 export default function JourneysPage() {
     const [journeySearch, setJourneySearch] = useState("")
     const [journeys, setJourneys] = useState([])
+    const [selectedJourney, setSelectedJourney] = useState<JourneyInfo|null>(null)
+
+    const trainsRef = useRef<TrainsRef>(null)
 
     useEffect(() => {
         setJourneys(JSON.parse(localStorage.getItem("journeys")!))
     }, [])
+
+    useEffect(() => {
+        if (selectedJourney !== null) {
+            trainsRef.current?.getData(selectedJourney.firstStation, selectedJourney.secondStation)
+        }
+    }, [selectedJourney])
 
     const filteredJourneys = useMemo(() => {
         if (journeys === null) {
@@ -22,8 +32,18 @@ export default function JourneysPage() {
         return journeys.filter((journey: JourneyInfo) => journey.name.toLowerCase().includes(journeySearch.toLowerCase()))
     }, [journeys, journeySearch])
 
+    function deleteJourney(name: string) {
+        let newJourneys = journeys.filter((journey: JourneyInfo) => journey.name != name)
+        setJourneys(newJourneys)
+        localStorage.setItem("journeys", JSON.stringify(newJourneys))
+    }
+
     return (
         <>
+            {selectedJourney === null ?
+
+            <>
+            {/* list of journeys */}
             <p className="pt-32 pb-8 text-center text-3xl font-semibold text-primary">Train Journeys</p>
             <div className="pb-8 px-2 flex flex-col sm:flex-row justify-center items-center gap-8">
                 <input 
@@ -39,9 +59,29 @@ export default function JourneysPage() {
             </div>
             <div className="flex flex-col items-center gap-4 mb-16">
                 {filteredJourneys.map((journey: JourneyInfo, index) => {
-                    return <JourneyWidget {...journey} key={`journey${index}`} />
+                    return <JourneyWidget {...journey} deleteFunction={() => deleteJourney(journey.name)} openFunction={() => setSelectedJourney(journey)} key={`journey${index}`} />
                 })}
             </div>
+            </>
+
+            :
+
+            <>
+            {/* specific journey */}
+            <p className="flex justify-center gap-2 pt-32 pb-4 text-center text-3xl font-semibold text-primary">
+                <button onClick={() => setSelectedJourney(null)}>
+                    <ArrowBack fontSize="large" htmlColor="#142c8e" />
+                </button>
+                {selectedJourney!.name}
+            </p>
+            <p className="text-center text-gray-400">{selectedJourney.firstStation} to {selectedJourney.secondStation}</p>
+            <div className="flex justify-center py-4 gap-4">
+                <SmallButton icon={<Refresh fontSize="large" htmlColor="#ffffff" />}  />
+                <SmallButton icon={<SwapHoriz fontSize="large" htmlColor="#ffffff" />} />
+            </div>
+            <Trains ref={trainsRef} />
+            </>
+            }
         </>
     )
 }
