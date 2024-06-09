@@ -12,6 +12,7 @@ export default function JourneysPage() {
     const [journeySearch, setJourneySearch] = useState("")
     const [journeys, setJourneys] = useState([])
     const [selectedJourney, setSelectedJourney] = useState<JourneyInfo|null>(null)
+    const [switched, setSwitched] = useState(false)
 
     const trainsRef = useRef<TrainsRef>(null)
 
@@ -36,6 +37,20 @@ export default function JourneysPage() {
         let newJourneys = journeys.filter((journey: JourneyInfo) => journey.name != name)
         setJourneys(newJourneys)
         localStorage.setItem("journeys", JSON.stringify(newJourneys))
+    }
+
+    function openJourney(journey: JourneyInfo) {
+        setSelectedJourney(journey)
+        setSwitched(false)
+    }
+
+    function switchStations() {
+        if (switched) {
+            trainsRef.current?.getData(selectedJourney!.firstStation, selectedJourney!.secondStation)
+        } else {
+            trainsRef.current?.getData(selectedJourney!.secondStation, selectedJourney!.firstStation)
+        }
+        setSwitched(!switched)
     }
 
     return (
@@ -74,10 +89,15 @@ export default function JourneysPage() {
                 </button>
                 {selectedJourney!.name}
             </p>
-            <p className="text-center text-gray-400">{selectedJourney.firstStation} to {selectedJourney.secondStation}</p>
+            <p className="text-center text-gray-400">
+                {!switched ?
+                `${selectedJourney.firstStation} to ${selectedJourney.secondStation}`
+                :
+                `${selectedJourney.secondStation} to ${selectedJourney.firstStation}`
+                }
+                </p>
             <div className="flex justify-center py-4 gap-4">
-                <SmallButton icon={<Refresh fontSize="large" htmlColor="#ffffff" />}  />
-                <SmallButton icon={<SwapHoriz fontSize="large" htmlColor="#ffffff" />} />
+                <SmallButton icon={<SwapHoriz fontSize="large" htmlColor="#ffffff" />} onClick={switchStations} />
             </div>
             <Trains ref={trainsRef} />
             </>
