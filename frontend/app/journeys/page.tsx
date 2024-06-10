@@ -91,6 +91,8 @@ export default function JourneysPage() {
                 {filteredJourneys.map((journey: JourneyInfo, index) => {
                     return <JourneyWidget {...journey} deleteFunction={() => deleteJourney(journey.name)} openFunction={() => openJourney(journey)} key={`journey${index}`} />
                 })}
+
+                {filteredJourneys.length == 0 ? <p className="text-3xl text-gray-400 pt-4">No journeys found</p> : <></>}
             </div>
             </>
 
