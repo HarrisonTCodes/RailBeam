@@ -80,17 +80,17 @@ function Trains({}, ref: Ref<TrainsRef>) {
 
     return (
         <div className="flex flex-col items-center gap-4 mb-16">
-                {/* services */}
-                {sortedData.map((train: TrainInfo, index) => {
-                    return <TrainWidget {...train} key={`train${index}`} averageDuration={averageDuration} />
-                })}
-
-                {/* error message */}
-                {err ? <p className="flex gap-2 text-3xl text-failure pt-4 font-semibold"><Warning fontSize="large"/> No services found</p> : <></>}
-
-                {/* loading skeletons */}
-                {loading && !err ? [...Array(6)].map((_, index) => <TrainWidgetSkeleton key={`skeleton${index}`} />) : <></>}
-            </div>
+            {/* services */}
+            {sortedData.map((train: TrainInfo, index) => {
+                return <TrainWidget {...train} key={`train${index}`} averageDuration={averageDuration} />
+            })}
+            
+            {/* error message */}
+            {err ? <p className="flex gap-2 text-3xl text-failure pt-4 font-semibold"><Warning fontSize="large"/> No services found</p> : <></>}
+            
+            {/* loading skeletons */}
+            {loading && !err ? [...Array(6)].map((_, index) => <TrainWidgetSkeleton key={`skeleton${index}`} />) : <></>}
+        </div>
     )
 }
 
